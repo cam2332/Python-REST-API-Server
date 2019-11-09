@@ -2,6 +2,16 @@ import psycopg2
 from config import config
 import json
 from utilities import DatetimeEncoder
+import datetime
+
+def dateConverter(o):
+    if isinstance(o, datetime.date):
+        return o.isoformat()
+
+def resultToJson(cur, numberOfRows):
+    r = [dict((cur.description[i][0], value) \
+        for i, value in enumerate(row)) for row in cur.fetchmany(numberOfRows)]
+    return r
 
 class Connect:
     connection = None
@@ -28,8 +38,32 @@ class Connect:
     def getTest(self):
         cur = self.connection.cursor()
         cur.execute('SELECT * FROM dziekanat.studenci')
-        answer = cur.fetchone()
-        return json.dumps(answer, cls=DatetimeEncoder)
+        result = resultToJson(cur,2)
+
+        jsontest = "[ \
+            {\
+                'id': 1, \
+                'first_name': 'Jan1', \
+                'last_name': 'Kowalski1' \
+            }, \
+            {\
+                'id': 2, \
+                'first_name': 'Jan2', \
+                'last_name': 'Kowalski2'\
+            }, \
+            {\
+                'id': 3, \
+                'first_name': 'Jan3', \
+                'last_name': 'Kowalski3'\
+            }, \
+        ]"
+
+        print(jsontest)
+        #answer = cur.fetchone()
+        #print(answer)
+        
+        print(json.dumps(jsontest, default=dateConverter))
+        return json.dumps(jsontest, default=dateConverter)#cls=DatetimeEncoder)
     
 '''
 def connect():
