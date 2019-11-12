@@ -52,7 +52,7 @@ players = [
         "playedmatches": 1038,
         "wins": 266,
         "winpercent": 25.62,
-        "kills": 456,
+        "kills": 458,
         "deaths": 357,
         "assists": 45,
         "kd": 2.5,
@@ -163,22 +163,35 @@ class Stats(Resource):
         users = [user for user in users if user["name"] != name]
         return "{} is deleted.".format(name), 200
 
-class Ranking(Resource):
-    def get(self,name):
-        if name == "bestplayer":
-            player = dict(min(players, key=lambda x:x['rank']))
-            return {"playername":player.get("playername"), "rank":player.get("rank")}
-        elif name == "mostwins":
-            player = dict(max(players, key=lambda x:x['wins']))
-            return {"playername":player.get("playername"), "wins":player.get("wins")}
-        elif name == "mostkills":
-            player = dict(max(players, key=lambda x:x['kills']))
-            return {"playername":player.get("playername"), "kills":player.get("kills")}
-        else:
-            return "User not found", 404
+@app.route("/ranking/best/<string:name>")
+def getBest(name):
+    if name == "bestplayer":
+        player = dict(min(players, key=lambda x:x['rank']))
+        return {"playername":player.get("playername"), "statvalue":player.get("rank")}
+    elif name == "mostwins":
+        player = dict(max(players, key=lambda x:x['wins']))
+        return {"playername":player.get("playername"), "statvalue":player.get("wins")}
+    elif name == "mostkills":
+        player = dict(max(players, key=lambda x:x['kills']))
+        return {"playername":player.get("playername"), "statvalue":player.get("kills")}
+    else:
+        return "User not found", 404
 
+@app.route("/stats/player/<string:name>")
+def getPlayerProfile(name):
+        if name == "test":
+            result = conn.getTest()
+            conn.closeConnection()
+            return result, 200
+        else:
+            for player in players:
+                if(name == player["playername"]):
+                    return player, 200
+        #for user in users:
+        #    if(name == user["name"]):
+        #        return user, 200
+        return "User not found", 404
       
-api.add_resource(Stats, "/stats/player/<string:name>")
-api.add_resource(Ranking, "/rank/<string:name>")
+#api.add_resource(Stats, "/stats/player/<string:name>")
 
 app.run(host='192.168.1.102', port='5000')
