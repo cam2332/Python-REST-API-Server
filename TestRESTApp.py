@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
 import connect
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -23,10 +24,10 @@ users = [
     }
 ]
 
-players = [
+playersDatabase = [
     {
         "rank": 1,
-        "playername": "Player1",
+        "playername": "NoobMaster69",
         "lvl": 24,
         "actualxp": 3095,
         "maxxp": 4963,
@@ -83,7 +84,7 @@ players = [
     },
     {
         "rank": 3,
-        "playername": "Player4",
+        "playername": "Unknown1",
         "lvl": 19,
         "actualxp": 2635,
         "maxxp": 3163,
@@ -112,7 +113,7 @@ class Stats(Resource):
             conn.closeConnection()
             return result, 200
         else:
-            for player in players:
+            for player in playersDatabase:
                 if(name == player["playername"]):
                     return player, 200
         #for user in users:
@@ -163,28 +164,28 @@ class Stats(Resource):
         users = [user for user in users if user["name"] != name]
         return "{} is deleted.".format(name), 200
 
-@app.route("/ranking/best/<string:name>")
+@app.route("/stats/ranking/best/<string:name>")
 def getBest(name):
     if name == "bestplayer":
-        player = dict(min(players, key=lambda x:x['rank']))
+        player = dict(min(playersDatabase, key=lambda x:x['rank']))
         return {"playername":player.get("playername"), "statvalue":player.get("rank")}
     elif name == "mostwins":
-        player = dict(max(players, key=lambda x:x['wins']))
+        player = dict(max(playersDatabase, key=lambda x:x['wins']))
         return {"playername":player.get("playername"), "statvalue":player.get("wins")}
     elif name == "mostkills":
-        player = dict(max(players, key=lambda x:x['kills']))
+        player = dict(max(playersDatabase, key=lambda x:x['kills']))
         return {"playername":player.get("playername"), "statvalue":player.get("kills")}
     else:
         return "User not found", 404
 
-@app.route("/stats/player/<string:name>")
+@app.route("/stats/player/profile/<string:name>")
 def getPlayerProfile(name):
         if name == "test":
             result = conn.getTest()
             conn.closeConnection()
             return result, 200
         else:
-            for player in players:
+            for player in playersDatabase:
                 if(name == player["playername"]):
                     return player, 200
         #for user in users:
@@ -192,6 +193,19 @@ def getPlayerProfile(name):
         #        return user, 200
         return "User not found", 404
       
+
+@app.route("/stats/search/<string:name>")
+def getPlayersByName(name):
+    if name != "":
+        players = []
+        for player in playersDatabase:
+            if name.lower() in player.get("playername").lower():
+                players.append({"playername": player.get("playername"), "rank": player.get("rank")})
+        print(players)
+        return json.dumps(players), 200
+    else:
+        return "User not found", 404
+
 #api.add_resource(Stats, "/stats/player/<string:name>")
 
 app.run(host='192.168.1.102', port='5000')
