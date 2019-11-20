@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import Api, Resource, reqparse
 import connect
 import json
+import DB
 
 app = Flask(__name__)
 api = Api(app)
@@ -24,84 +25,7 @@ users = [
     }
 ]
 
-playersDatabase = [
-    {
-        "rank": 1,
-        "playername": "NoobMaster69",
-        "lvl": 24,
-        "actualxp": 3095,
-        "maxxp": 4963,
-        "playedmatches": 1038,
-        "wins": 466,
-        "winpercent": 44.89,
-        "kills": 456,
-        "deaths": 357,
-        "assists": 45,
-        "kd": 2.5,
-        "kda": 3.1,
-        "killspermatch": 6.24,
-        "killsperminute": 1.41,
-        "scorepermatch": 346,
-        "scoreperminute": 56,
-    },
-    {
-        "rank": 2,
-        "playername": "Player2",
-        "lvl": 23,
-        "actualxp": 3135,
-        "maxxp": 4663,
-        "playedmatches": 1038,
-        "wins": 266,
-        "winpercent": 25.62,
-        "kills": 458,
-        "deaths": 357,
-        "assists": 45,
-        "kd": 2.5,
-        "kda": 3.1,
-        "killspermatch": 6.24,
-        "killsperminute": 1.41,
-        "scorepermatch": 346,
-        "scoreperminute": 56,
-    },
-    {
-        "rank": 4,
-        "playername": "Player3",
-        "lvl": 14,
-        "actualxp": 2135,
-        "maxxp": 3663,
-        "playedmatches": 638,
-        "wins": 166,
-        "winpercent": 26.01,
-        "kills": 256,
-        "deaths": 357,
-        "assists": 75,
-        "kd": 0.71,
-        "kda": 3.1,
-        "killspermatch": 2.24,
-        "killsperminute": 3.41,
-        "scorepermatch": 236,
-        "scoreperminute": 36,
-    },
-    {
-        "rank": 3,
-        "playername": "Unknown1",
-        "lvl": 19,
-        "actualxp": 2635,
-        "maxxp": 3163,
-        "playedmatches": 238,
-        "wins": 206,
-        "winpercent": 86.55,
-        "kills": 356,
-        "deaths": 217,
-        "assists": 105,
-        "kd": 0.71,
-        "kda": 3.1,
-        "killspermatch": 3.24,
-        "killsperminute": 2.41,
-        "scorepermatch": 346,
-        "scoreperminute": 66,
-    }
-]
+
 
 
 conn = connect.Connect()
@@ -113,7 +37,7 @@ class Stats(Resource):
             conn.closeConnection()
             return result, 200
         else:
-            for player in playersDatabase:
+            for player in DB.playersDatabase:
                 if(name == player["playername"]):
                     return player, 200
         #for user in users:
@@ -164,16 +88,17 @@ class Stats(Resource):
         users = [user for user in users if user["name"] != name]
         return "{} is deleted.".format(name), 200
 
+
 @app.route("/stats/ranking/best/<string:name>")
 def getBest(name):
     if name == "bestplayer":
-        player = dict(min(playersDatabase, key=lambda x:x['rank']))
+        player = dict(min(DB.playersDatabase, key=lambda x:x['rank']))
         return {"playername":player.get("playername"), "statvalue":player.get("rank")}
     elif name == "mostwins":
-        player = dict(max(playersDatabase, key=lambda x:x['wins']))
+        player = dict(max(DB.playersDatabase, key=lambda x:x['wins']))
         return {"playername":player.get("playername"), "statvalue":player.get("wins")}
     elif name == "mostkills":
-        player = dict(max(playersDatabase, key=lambda x:x['kills']))
+        player = dict(max(DB.playersDatabase, key=lambda x:x['kills']))
         return {"playername":player.get("playername"), "statvalue":player.get("kills")}
     else:
         return "User not found", 404
@@ -185,8 +110,10 @@ def getPlayerProfile(name):
             conn.closeConnection()
             return result, 200
         else:
-            for player in playersDatabase:
+            for player in DB.playersDatabase:
                 if(name == player["playername"]):
+                    player['killspermatch'] = player.get('kills') / player.get('playedmatches')
+                    print(player)
                     return player, 200
         #for user in users:
         #    if(name == user["name"]):
@@ -198,7 +125,7 @@ def getPlayerProfile(name):
 def getPlayersByName(name):
     if name != "":
         players = []
-        for player in playersDatabase:
+        for player in DB.playersDatabase:
             if name.lower() in player.get("playername").lower():
                 players.append({"playername": player.get("playername"), "rank": player.get("rank")})
         print(players)
