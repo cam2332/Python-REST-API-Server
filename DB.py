@@ -1,5 +1,6 @@
 playersDatabase = [
     {
+        "id": 1,
         "rank": 1,
         "playername": "NoobMaster69",
         "lvl": 24,
@@ -19,6 +20,7 @@ playersDatabase = [
         "scoreperminute": 56,
     },
     {
+        "id": 3,
         "rank": 2,
         "playername": "Player2",
         "lvl": 23,
@@ -38,6 +40,7 @@ playersDatabase = [
         "scoreperminute": 56,
     },
     {
+        "id": 7,
         "rank": 4,
         "playername": "Player3",
         "lvl": 14,
@@ -57,6 +60,7 @@ playersDatabase = [
         "scoreperminute": 36,
     },
     {
+        "id": 10,
         "rank": 3,
         "playername": "Unknown1",
         "lvl": 19,
@@ -79,6 +83,10 @@ playersDatabase = [
 
 matches = [
     {
-        
+        "player_id": 1,
+        "date": '2019-11-22',
+        "wins": 4,
+        "loss": 1,
     }
 ]
+

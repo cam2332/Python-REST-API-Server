@@ -131,4 +131,4 @@ def getPlayersByName(name):
 
 #api.add_resource(Stats, "/stats/player/<string:name>")
 
-app.run(host='192.168.1.106', port='5000')
+app.run(host='192.168.1.102', port='5000')
