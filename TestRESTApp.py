@@ -28,18 +28,14 @@ users = [
 
 
 
-conn = connect.Connect()
+#conn = connect.Connect()
 
 class Stats(Resource):
     def get(self, name):
-        if name == "test":
-            result = conn.getTest()
-            conn.closeConnection()
-            return result, 200
-        else:
-            for player in DB.playersDatabase:
-                if(name == player["playername"]):
-                    return player, 200
+        
+        for player in DB.playersDatabase:
+            if(name == player["playername"]):
+                return player, 200
         #for user in users:
         #    if(name == user["name"]):
         #        return user, 200
@@ -106,9 +102,9 @@ def getBest(name):
 @app.route("/stats/player/profile/<string:name>")
 def getPlayerProfile(name):
         if name == "test":
-            result = conn.getTest()
-            conn.closeConnection()
-            return result, 200
+            #result = conn.getTest()
+            #conn.closeConnection()
+            return 'result', 200
         else:
             for player in DB.playersDatabase:
                 if(name == player["playername"]):
@@ -135,4 +131,4 @@ def getPlayersByName(name):
 
 #api.add_resource(Stats, "/stats/player/<string:name>")
 
-app.run(host='192.168.1.102', port='5000')
+app.run(host='192.168.1.106', port='5000')
