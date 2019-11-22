@@ -3,6 +3,8 @@ from flask_restful import Api, Resource, reqparse
 import connect
 import json
 import DB
+from myConfig import configSERVER
+from myConfig import configLocalIP
 
 app = Flask(__name__)
 api = Api(app)
@@ -131,4 +133,4 @@ def getPlayersByName(name):
 
 #api.add_resource(Stats, "/stats/player/<string:name>")
 
-app.run(host='192.168.1.102', port='5000')
+app.run(host=configLocalIP(), port=configSERVER('port'))

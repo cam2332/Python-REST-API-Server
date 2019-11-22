@@ -1,5 +1,5 @@
 import psycopg2
-from config import config
+from myConfig import configDB
 import json
 from utilities import DatetimeEncoder
 import datetime
@@ -18,7 +18,7 @@ class Connect:
     def __init__(self):
         try:
             # read connection parameters
-            params = config()
+            params = configDB()
 
             # connect to the PostgreSQL server
             print('Connecting to the PostgreSQL database')
