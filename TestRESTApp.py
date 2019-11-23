@@ -131,6 +131,25 @@ def getPlayersByName(name):
     else:
         return "User not found", 404
 
+@app.route("/stats/player/history/<string:player_name>/<string:stat_type>")
+def getPlayerHistory(player_name,stat_type):
+    if player_name != "":
+        if stat_type != "":
+            player_id = ''
+            for player in DB.playersDatabase:
+                if player_name.lower() in player.get('playername').lower():
+                    player_id = player.get('id')
+            returnValue = []
+            for stat in DB.matches:
+                if player_id in stat.get('player_id'):
+                    returnValue.append({'date': stat['date'], 'wins': stat['wins'], 'losses': stat['losses']})
+            return json.dumps(returnValue), 200
+        else:
+            return 'Stat type not found', 404
+    else:
+        return 'Player not found', 404
+
+
 #api.add_resource(Stats, "/stats/player/<string:name>")
 
 app.run(host=configLocalIP(), port=configSERVER('port'))

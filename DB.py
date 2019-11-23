@@ -86,7 +86,37 @@ matches = [
         "player_id": 1,
         "date": '2019-11-22',
         "wins": 4,
-        "loss": 1,
+        "losses": 1,
+    },
+    {
+        "player_id": 1,
+        "date": '2019-11-23',
+        "wins": 1,
+        "losses": 2,
+    },
+    {
+        "player_id": 1,
+        "date": '2019-11-24',
+        "wins": 6,
+        "losses": 4,
+    },
+    {
+        "player_id": 1,
+        "date": '2019-11-25',
+        "wins": 4,
+        "losses": 2,
+    },
+    {
+        "player_id": 1,
+        "date": '2019-11-26',
+        "wins": 2,
+        "losses": 2,
+    },
+    {
+        "player_id": 1,
+        "date": '2019-11-27',
+        "wins": 4,
+        "losses": 5,
     }
 ]
 
