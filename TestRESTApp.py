@@ -119,7 +119,7 @@ def getPlayerProfile(name):
         return "User not found", 404
       
 
-@app.route("/stats/search/<string:name>")
+@app.route("/stats/player/search/<string:name>")
 def getPlayersByName(name):
     if name != "":
         players = []
@@ -127,6 +127,17 @@ def getPlayersByName(name):
             if name.lower() in player.get("playername").lower():
                 players.append({"playername": player.get("playername"), "rank": player.get("rank")})
         print(players)
+        return json.dumps(players), 200
+    else:
+        return "User not found", 404
+
+@app.route("/stats/player/search/<int:player_rank>")
+def getPlayersByRank(player_rank):
+    if player_rank > 0:
+        players = []
+        for player in DB.playersDatabase:
+            if player_rank == player["rank"] or str(player_rank) in player["playername"]:
+                players.append({"playername": player["playername"], "rank": player["rank"]})
         return json.dumps(players), 200
     else:
         return "User not found", 404
@@ -140,9 +151,10 @@ def getPlayerHistory(player_name,stat_type):
                 if player_name.lower() in player.get('playername').lower():
                     player_id = player.get('id')
             returnValue = []
-            for stat in DB.matches:
-                if player_id in stat.get('player_id'):
-                    returnValue.append({'date': stat['date'], 'wins': stat['wins'], 'losses': stat['losses']})
+            if stat_type == 'wins':
+                for stat in DB.matches:
+                    if player_id == stat.get('player_id'):
+                        returnValue.append({'date': stat['date'], 'wins': stat['wins'], 'losses': stat['losses']})
             return json.dumps(returnValue), 200
         else:
             return 'Stat type not found', 404
