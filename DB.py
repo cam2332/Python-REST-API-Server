@@ -81,42 +81,82 @@ playersDatabase = [
     }
 ]
 
-matches = [
-    {
-        "player_id": 1,
-        "date": '2019-11-22',
-        "wins": 4,
-        "losses": 1,
-    },
-    {
-        "player_id": 1,
-        "date": '2019-11-23',
-        "wins": 1,
-        "losses": 2,
-    },
-    {
-        "player_id": 1,
-        "date": '2019-11-24',
-        "wins": 6,
-        "losses": 4,
-    },
-    {
-        "player_id": 1,
-        "date": '2019-11-25',
-        "wins": 4,
-        "losses": 2,
-    },
-    {
-        "player_id": 1,
-        "date": '2019-11-26',
-        "wins": 2,
-        "losses": 2,
-    },
-    {
-        "player_id": 1,
-        "date": '2019-11-27',
-        "wins": 4,
-        "losses": 5,
-    }
-]
+wins_losses = {
+    "lastday": [
+        {
+            "player_id": 1,
+            "datetime": '2019-11-22 12:50',
+            "wins": 4,
+            "losses": 1,
+        },
+        {
+            "player_id": 1,
+            "datetime": '2019-11-22 14:04',
+            "wins": 1,
+            "losses": 2,
+        },
+        {
+            "player_id": 1,
+            "datetime": '2019-11-22 15:32',
+            "wins": 6,
+            "losses": 4,
+        },
+        {
+            "player_id": 1,
+            "datetime": '2019-11-22 09:12',
+            "wins": 4,
+            "losses": 2,
+        },
+        {
+            "player_id": 1,
+            "datetime": '2019-11-22 07:12',
+            "wins": 2,
+            "losses": 2,
+        },
+        {
+            "player_id": 1,
+            "datetime": '2019-11-22 12:12',
+            "wins": 4,
+            "losses": 5,
+        }
+    ],
+    "lastweek": [
+        {
+            "player_id": 1,
+            "datetime": '2019-11-22',
+            "wins": 4,
+            "losses": 1,
+        },
+        {
+            "player_id": 1,
+            "datetime": '2019-11-23',
+            "wins": 1,
+            "losses": 2,
+        },
+        {
+            "player_id": 1,
+            "datetime": '2019-11-24',
+            "wins": 6,
+            "losses": 4,
+        },
+        {
+            "player_id": 1,
+            "datetime": '2019-11-25',
+            "wins": 4,
+            "losses": 2,
+        },
+        {
+            "player_id": 1,
+            "datetime": '2019-11-26',
+            "wins": 2,
+            "losses": 2,
+        },
+        {
+            "player_id": 1,
+            "datetime": '2019-11-27',
+            "wins": 4,
+            "losses": 5,
+        }
+    ]
+}
 

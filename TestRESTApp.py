@@ -150,12 +150,23 @@ def getPlayerHistory(player_name,stat_type):
             for player in DB.playersDatabase:
                 if player_name.lower() in player.get('playername').lower():
                     player_id = player.get('id')
-            returnValue = []
-            if stat_type == 'wins':
-                for stat in DB.matches:
+            if stat_type == 'wins_losses':
+                lastDayStats = []
+                lastWeekStats = []
+                # Add last day stats
+                for stat in DB.wins_losses['lastday']:
                     if player_id == stat.get('player_id'):
-                        returnValue.append({'date': stat['date'], 'wins': stat['wins'], 'losses': stat['losses']})
-            return json.dumps(returnValue), 200
+                        lastDayStats.append({'datetime': stat['datetime'], 'wins': stat['wins'], 'losses': stat['losses'] * (-1)})
+                # Add last week stats
+                for stat in DB.wins_losses['lastweek']:
+                    if player_id == stat['player_id']:
+                        lastWeekStats.append({'datetime': stat['datetime'], 'wins': stat['wins'], 'losses': stat['losses'] * (-1)})
+            return json.dumps({'wins_losses': {
+                                     'lastday': lastDayStats,
+                                     'lastweek': lastWeekStats
+                                     }
+                                }
+                            ), 200
         else:
             return 'Stat type not found', 404
     else:
