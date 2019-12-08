@@ -110,7 +110,12 @@ def getPlayerProfile(name):
         else:
             for player in DB.playersDatabase:
                 if(name == player["playername"]):
+                    player['kd'] = player.get('kills') / player.get('deaths')
+                    player['kda'] = (player['kills'] + ((1/3) * player['assists'])) - player['deaths']
                     player['killspermatch'] = player.get('kills') / player.get('playedmatches')
+                    player['scorepermatch'] = player['overallscore'] / player['playedmatches']
+                    player['killsperminute'] = player['kills'] / (player['overallgametime'] / 60.0)
+                    player['scoreperminute'] = player['overallscore'] / (player['overallgametime'] / 60)
                     print(player)
                     return player, 200
         #for user in users:
